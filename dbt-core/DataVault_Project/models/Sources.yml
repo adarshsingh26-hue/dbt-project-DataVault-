@@ -2,7 +2,7 @@
 version: 2
 
 sources:
-  - name: RAW
+  - name: R_CUSTOMERS
     database: DBT_DB
     schema: DBT_HUB
     tables:
@@ -18,7 +18,7 @@ sources:
           - name: customer_phone
             description: "Phone number of the customer."   
       
-  - name: RAW
+  - name: R_ORDERS
     database: DBT_DB
     schema: DBT_HUB
     tables:

@@ -21,9 +21,5 @@ models:
           - relationships:
               to: DBT_DB.DBT_HUB.RAW_CUSTOMERS
               field: customer_id
-          - generic_test
-      - name: load_dts
-        description: '{{doc("load_dts_in_HUB_CUSTOMER_in_HUB")}}'
-      - name: source
-        description: '{{doc("source_in_HUB_CUSTOMER_in_HUB")}}'
+
      

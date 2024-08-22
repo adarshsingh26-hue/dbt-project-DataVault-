@@ -6,13 +6,15 @@ Revision Date       User          Comment
 2024-08-21        Adarsh       Initial version
 -#}
 
+{{ config(materialized='incremental') }}
+
 WITH source_data AS (
     SELECT
         o.customer_id,
         o.order_id,
         CURRENT_TIMESTAMP() AS load_dts,
-        'RAW' AS source
-    FROM {{ source('RAW', 'RAW_ORDERS')}} o
+        'R' AS source
+    FROM {{ source('R_ORDERS', 'RAW_ORDERS')}} o
 )
 
 SELECT
@@ -22,4 +24,9 @@ SELECT
     load_dts,
     source
 FROM source_data
+
+{% if is_incremental() %}
+
 WHERE MD5(CONCAT(customer_id::TEXT, order_id::TEXT)) NOT IN (SELECT customer_order_hk FROM {{ this }})
+
+{% endif %}

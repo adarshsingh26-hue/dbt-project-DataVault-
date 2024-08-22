@@ -11,21 +11,22 @@ Revision Date       User          Comment
 ) }}
 
 WITH source_data AS (
-    SELECT 
+    SELECT
         customer_id,
-        MD5(CONCAT(CAST(customer_id AS STRING), '{{ source('raw', 'raw_customers') }}')) AS customer_key,
-        CURRENT_TIMESTAMP() AS load_date,
-        '{{ source('raw', 'raw_customers') }}' AS record_source
-    FROM 
-        {{ source('raw', 'raw_customers') }}
+        CURRENT_TIMESTAMP() AS load_dts,
+        'R' as source
+    FROM {{ source('R_CUSTOMERS', 'RAW_CUSTOMERS')}}
 )
 
-SELECT 
-    customer_key,
+SELECT
+    MD5(customer_id::TEXT) AS customer_hk,
     customer_id,
-    load_date,
-    record_source
-FROM 
-    source_data
+    load_dts,
+    source
+FROM source_data
 
+{% if is_incremental() %}
 
+WHERE MD5(customer_id::TEXT) NOT IN (SELECT customer_hk FROM DBT_DB.DBT_HUB.HUB_CUSTOMER)
+
+{% endif %}

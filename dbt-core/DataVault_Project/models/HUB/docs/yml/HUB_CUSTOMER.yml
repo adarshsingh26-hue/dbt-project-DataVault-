@@ -1,0 +1,29 @@
+version: 2
+models:
+  - name: HUB_CUSTOMER
+    description: '{{doc("HUB_CUSTOMER_in_HUB")}}'
+    config:
+      tags: ['Refresh=Daily']
+      meta:
+        data classification: 'Internal'
+        natural key: 'customer_id'
+        primary keys: 'customer_HK'
+        refresh interval: 'Refresh=Daily'
+    columns:
+      - name: customer_HK
+        description: '{{doc("customer_HK_in_HUB_CUSTOMER_in_HUB")}}'
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: '{{doc("customer_id_in_HUB_CUSTOMER_in_HUB")}}'
+        tests:
+          - relationships:
+              to: DBT_DB.DBT_HUB.RAW_CUSTOMERS
+              field: customer_id
+          - generic_test
+      - name: load_dts
+        description: '{{doc("load_dts_in_HUB_CUSTOMER_in_HUB")}}'
+      - name: source
+        description: '{{doc("source_in_HUB_CUSTOMER_in_HUB")}}'
+     

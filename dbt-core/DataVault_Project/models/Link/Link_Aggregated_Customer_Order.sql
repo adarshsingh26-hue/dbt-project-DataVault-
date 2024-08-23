@@ -19,7 +19,7 @@ WITH orders AS (
 )
 
 SELECT
-    MD5(customer_id::TEXT) AS customer_hk,
+    {{ generate_hash_key(['customer_id::TEXT']) }} as customer_hk,,
     order_count,
     total_order_amount,
     CURRENT_TIMESTAMP() AS load_dts,

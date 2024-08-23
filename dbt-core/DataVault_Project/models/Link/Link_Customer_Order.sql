@@ -18,7 +18,7 @@ WITH source_data AS (
 )
 
 SELECT
-    MD5(CONCAT(customer_id::TEXT, order_id::TEXT)) AS customer_order_hk,
+    {{ generate_hash_key(['customer_id::TEXT']) }} as customer_hk,,
     MD5(customer_id::TEXT) AS customer_hk,
     MD5(order_id::TEXT) AS order_hk,
     load_dts,
